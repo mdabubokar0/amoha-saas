@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "icon" : "img/dashboard.svg",
+        "title": "Dashboard",
+        "link": "/"
+    },
+    {
+        "id": 2,
+        "icon" : "img/visiontest.svg",
+        "title": "Vision Test",
+        "link": "/visiontest"
+    },
+    {
+        "id": 3,
+        "icon" : "img/patientrecord.svg",
+        "title": "Patient Records",
+        "link": "/patientrecords"
+    },
+    {
+        "id": 4,
+        "icon" : "img/ocd.svg",
+        "title": "Ocular Condition Diagnosis",
+        "link": "/ocd"
+    },
+    {
+        "id": 5,
+        "icon" : "img/patientreport.svg",
+        "title": "Reports",
+        "link": "/reports"
+    }
+]

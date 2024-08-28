@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "Total Appointments",
+        "count": "537",
+        "color": "#9FFF8F"
+    },
+    {
+        "id": 2,
+        "title": "Consultation",
+        "count": "238",
+        "color": "#A5FFFF"
+    },
+    {
+        "id": 3,
+        "title": "Surgery",
+        "count": "127",
+        "color": "#DF9BFF"
+    },
+    {
+        "id": 4,
+        "title": "Discharged",
+        "count": "78",
+        "color": "#FFB185"
+    }
+]
