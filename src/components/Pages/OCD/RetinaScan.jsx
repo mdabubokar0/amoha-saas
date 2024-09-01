@@ -4,7 +4,7 @@ function RetinaScan(props) {
       <h1 className="text-[12px] text-[#777E90] font-bold uppercase">
         {props.label}
       </h1>
-      <div className="w-full h-[150px] rounded-[8px] bg-[#F4F5F6]"></div>
+      <div className="w-full h-[100px] md:h-[150px] rounded-[8px] bg-[#F4F5F6]"></div>
       <label
         htmlFor={props.for}
         className="text-[12px] font-bold uppercase inline-block bg-[#3174C4] cursor-pointer w-full h-[48px] place-content-center text-center text-white rounded-[8px]"

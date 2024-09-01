@@ -8,7 +8,7 @@ import patientData from "../PatientRecords/patientData.json";
 export const Dashboard = () => {
   return (
     <div>
-      <div className="px-[5%] flex justify-between bg pb-[70px] md:pb-0">
+      <div className="px-[5%] flex justify-between bg mb-20 md:mb-0">
         <Sidebar />
         <div className="w-full p-3 flex flex-col lg:flex-row gap-4 lg:gap-3 justify-between">
           <div className="w-full flex flex-col gap-4">
@@ -54,7 +54,7 @@ export const Dashboard = () => {
                   <th>ID</th>
                   <th>Name</th>
                   <th className="hide">Gender</th>
-                  <th className="hide">Blood</th>
+                  <th className="px-3 hide">Blood</th>
                   <th>Status</th>
                 </tr>
                 {patientData.map((p) => (

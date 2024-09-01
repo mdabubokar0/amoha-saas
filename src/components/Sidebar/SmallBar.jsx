@@ -11,7 +11,7 @@ export const SmallBar = () => {
   };
 
   return (
-    <div className="bg-white md:hidden border-t-[.5px] border-t-[#c4c4c4] fixed bottom-0 flex items-center justify-evenly w-full h-[70px]">
+    <div className="bg-white lg:hidden border-t-[.5px] border-t-[#c4c4c4] fixed bottom-0 flex items-center justify-evenly w-full h-[70px]">
       {sidebar.map((s) => (
         <Link
           to={s.link}

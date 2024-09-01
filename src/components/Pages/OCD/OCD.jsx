@@ -70,9 +70,9 @@ export const OCD = () => {
 
   return (
     <div>
-      <div className="px-[5%] flex justify-between bg">
+      <div className="px-[5%] md:flex md:justify-between md:bg">
         <Sidebar />
-        <div className="w-full p-3 flex items-center justify-center">
+        <div className="w-full p-3 flex items-center justify-center mb-20 md:mb-0">
           {buttonVisible && (
             <div className="flex flex-col gap-4">
               <button
@@ -90,14 +90,14 @@ export const OCD = () => {
             </div>
           )}
           {active === "search" && (
-            <div className="w-[800px] rounded-[20px] border-[.5px] border-[#c4c4c4] bg-white p-10 relative">
+            <div className="w-[340px] md:w-[800px] rounded-[20px] border-[.5px] border-[#c4c4c4] bg-white p-5 md:p-10 relative">
               <form>
                 {searchStep === 1 && (
                   <div>
                     <h1 className="text-center text-[18px] font-semibold">
                       Search By Patient ID
                     </h1>
-                    <div className="m-20">
+                    <div className="m-5 md:m-20">
                       <PatientInput
                         label="Patient ID"
                         type="number"
@@ -111,7 +111,7 @@ export const OCD = () => {
                     <h1 className="text-center text-[18px] font-semibold">
                       Select Condition or Disease
                     </h1>
-                    <div className="m-20 flex flex-col gap-2">
+                    <div className="m-5 md:m-20 flex flex-col gap-2">
                       <label className="text-[12px] text-[#777E90] font-bold uppercase">
                         Conditions or Diseases
                       </label>
@@ -218,7 +218,7 @@ export const OCD = () => {
                     type="button"
                     onClick={prevSearchStep}
                     disabled={searchStep === 1}
-                    className={`w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
+                    className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       (searchStep === 1 ? "cursor-not-allowed" : "",
                       searchStep === 4 ? "hidden" : "")
                     }`}
@@ -228,7 +228,7 @@ export const OCD = () => {
                   <button
                     type="button"
                     onClick={nextSearchStep}
-                    className={`w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
+                    className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       searchStep === 1 ? "" : "hidden"
                     }`}
                   >
@@ -237,7 +237,7 @@ export const OCD = () => {
                   <button
                     type="button"
                     onClick={nextSearchStep}
-                    className={`w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
+                    className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       searchStep === 2 ? "" : "hidden"
                     }`}
                   >
@@ -246,7 +246,7 @@ export const OCD = () => {
                   <button
                     type="button"
                     onClick={nextSearchStep}
-                    className={`w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
+                    className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       searchStep === 3 ? "" : "hidden"
                     }`}
                   >
@@ -263,7 +263,7 @@ export const OCD = () => {
                   <button
                     type="button"
                     onClick={close}
-                    className="text-[40px] font-normal rotate-45 absolute top-5 right-10"
+                    className="text-[40px] font-normal rotate-45 absolute top-0 md:top-5 right-4 md:right-10"
                   >
                     +
                   </button>
@@ -272,7 +272,7 @@ export const OCD = () => {
             </div>
           )}
           {active === "create" && (
-            <div className="w-[800px] rounded-[20px] border-[.5px] border-[#c4c4c4] bg-white p-10 relative">
+            <div className="w-[340px] md:w-[800px] rounded-[20px] border-[.5px] border-[#c4c4c4] bg-white p-5 md:p-10 relative">
               <form>
                 {createStep === 1 && (
                   <div>
@@ -282,7 +282,7 @@ export const OCD = () => {
                     <div className="w-full border-b-[.5px] border-b-[#c4c4c4] mt-1">
                       General Information
                     </div>
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="mt-4 flex flex-col md:flex-row items-center gap-3">
                       <PatientInput
                         label="Name"
                         type="text"
@@ -294,7 +294,7 @@ export const OCD = () => {
                         placeholder="Enter Patient DOB/AGE"
                       />
                     </div>
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="mt-4 flex flex-col md:flex-row items-center gap-3">
                       <PatientInput
                         label="Blood Group"
                         type="text"
@@ -305,7 +305,7 @@ export const OCD = () => {
                     <div className="w-full border-b-[.5px] border-b-[#c4c4c4] mt-4">
                       Contact Information
                     </div>
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="mt-4 flex flex-col md:flex-row items-center gap-3">
                       <PatientInput
                         label="Address"
                         type="text"
@@ -332,7 +332,7 @@ export const OCD = () => {
                     <div className="w-full border-b-[.5px] border-b-[#c4c4c4] mt-1">
                       Medical History
                     </div>
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="mt-4 flex flex-col md:flex-row items-center gap-3">
                       <div className="w-full h-full flex flex-col gap-2">
                         <label className="text-[12px] text-[#777E90] font-bold uppercase">
                           Any existing ocular conditions or diseases
@@ -367,7 +367,7 @@ export const OCD = () => {
                         placeholder="Enter History of Eye Surgeries and Procedures"
                       />
                     </div>
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="mt-4 flex flex-col md:flex-row items-center gap-3">
                       <PatientInput
                         label="Any other relevant medical conditions"
                         type="text"
@@ -487,7 +487,7 @@ export const OCD = () => {
                       <div className="w-full border-b-[.5px] border-b-[#c4c4c4] mt-4">
                         Insurance Information
                       </div>
-                      <div className="mt-4 flex items-center gap-3">
+                      <div className="mt-4 flex flex-col md:flex-row items-center gap-3">
                         <PatientInput
                           label="Insurance Provider"
                           type="text"
@@ -502,7 +502,7 @@ export const OCD = () => {
                       <div className="w-full border-b-[.5px] border-b-[#c4c4c4] mt-4">
                         Lifestyle and Habits
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-col md:flex-row items-center gap-3">
                         <div className="w-full h-full flex flex-col gap-2">
                           <label className="text-[12px] text-[#777E90] font-bold uppercase mt-4">
                             Occupation
@@ -570,7 +570,7 @@ export const OCD = () => {
                     <div className="w-full border-b-[.5px] border-b-[#c4c4c4] mt-4">
                       Previous Eye Examinations
                     </div>
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="mt-4 flex flex-col md:flex-row items-center gap-3">
                       <PatientInput
                         label="Date of Last Eye Examination"
                         type="date"
@@ -592,7 +592,7 @@ export const OCD = () => {
                     <div className="w-full border-b-[.5px] border-b-[#c4c4c4] mt-4">
                       Visual Acuity Information
                     </div>
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="mt-4 flex flex-col md:flex-row items-center gap-3">
                       <PatientInput
                         label="Any History of Vision Problems or Changes in Vision"
                         type="text"
@@ -699,7 +699,7 @@ export const OCD = () => {
                     type="button"
                     onClick={prevCreateStep}
                     disabled={createStep === 1}
-                    className={`w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
+                    className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       (createStep === 1 ? "cursor-not-allowed" : "",
                       createStep === 6 ? "hidden" : "")
                     }`}
@@ -709,7 +709,7 @@ export const OCD = () => {
                   <button
                     type="button"
                     onClick={nextCreateStep}
-                    className={`w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
+                    className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       createStep === 5 || createStep === 6 ? "hidden" : ""
                     }`}
                   >
@@ -718,7 +718,7 @@ export const OCD = () => {
                   <button
                     type="button"
                     onClick={nextCreateStep}
-                    className={`w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
+                    className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       createStep === 5 ? "" : "hidden"
                     }`}
                   >
@@ -736,7 +736,7 @@ export const OCD = () => {
                   <button
                     type="button"
                     onClick={close}
-                    className="text-[40px] font-normal rotate-45 absolute top-5 right-10"
+                    className="text-[40px] font-normal rotate-45 absolute top-0 md:top-5 right-4 md:right-10"
                   >
                     +
                   </button>

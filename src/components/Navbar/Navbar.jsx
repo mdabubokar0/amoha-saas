@@ -40,14 +40,14 @@ export const Navbar = () => {
             </div>
           </div>
           {menu && (
-            <div className="absolute bg-white border-[.5px] border-[#c4c4c4] rounded-[20px] w-full p-5 flex flex-col gap-3 mt-1 text-[14px] shadow-lg">
+            <div className="absolute left-[100%] -translate-x-[100%] bg-white border-[.5px] border-[#c4c4c4] rounded-[20px] w-[200px] md:w-full p-5 flex flex-col gap-3 mt-1 text-[14px] shadow-lg">
               {menuData.map((m, i) => (
                 <div
                   className={`flex items-center gap-3 cursor-pointer ${
                     i === 3 ? "border-t-[.5px] border-t-[#c4c4c4] pt-3" : ""
                   }`}
                 >
-                  <img src={m.icon} alt="icon" className="w-[20px]" />
+                  <img src={m.icon} alt="icon" className="w-[20px] h-[20px]" />
                   {m.title}
                 </div>
               ))}
