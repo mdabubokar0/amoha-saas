@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar } from "../../Sidebar/Sidebar";
 import { SmallBar } from "../../Sidebar/SmallBar";
 import ReportCard from "./ReportCard";
 import reportInfo from "./reportInfo.json";
 import patientData from "../PatientRecords/patientData.json";
+import { Navbar } from "../../Navbar/Navbar";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
+  const [patientList, setPatientList] = useState([]);
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    } else {
+      axios
+        .get("http://18.212.83.122:8000/api/customers", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => setPatientList(res.data.data))
+        .catch((err) => console.log(err));
+    }
+  }, []);
+
   return (
     <div>
+      <Navbar />
       <div className="px-[5%] flex justify-between bg mb-20 md:mb-0">
         <Sidebar />
         <div className="w-full p-3 flex flex-col lg:flex-row gap-4 lg:gap-3 justify-between">
@@ -57,7 +79,7 @@ export const Dashboard = () => {
                   <th className="px-3 hide">Blood</th>
                   <th>Status</th>
                 </tr>
-                {patientData.map((p) => (
+                {patientList.map((p) => (
                   <tr>
                     <td>{p.id}</td>
                     <td>{p.name}</td>

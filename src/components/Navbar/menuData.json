@@ -2,21 +2,19 @@
   {
     "id": 1,
     "icon": "img/settings.svg",
-    "title": "Settings"
+    "title": "Settings",
+    "link": "/profile"
   },
   {
     "id": 2,
     "icon": "img/knowledgebase.svg",
-    "title": "Knowledge Base"
+    "title": "Knowledge Base",
+    "link": "/"
   },
   {
     "id": 3,
     "icon": "img/faqs.svg",
-    "title": "FAQ’s"
-  },
-  {
-    "id": 4,
-    "icon": "img/logout.svg",
-    "title": "Log Out"
+    "title": "FAQ’s",
+    "link": "/"
   }
 ]

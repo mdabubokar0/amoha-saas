@@ -3,7 +3,7 @@
         "id": 1,
         "icon" : "img/dashboard.svg",
         "title": "Dashboard",
-        "link": "/"
+        "link": "/dashboard"
     },
     {
         "id": 2,

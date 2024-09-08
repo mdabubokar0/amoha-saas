@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import menuData from "./menuData.json";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [menu, setMenu] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const navigate = useNavigate();
 
   const handleMenu = () => {
     setMenu(!menu);
-  };
-
-  const handleHidden = () => {
-    setHidden(!hidden);
   };
 
   return (
@@ -42,15 +39,25 @@ export const Navbar = () => {
           {menu && (
             <div className="absolute left-[100%] -translate-x-[100%] bg-white border-[.5px] border-[#c4c4c4] rounded-[20px] w-[200px] md:w-full p-5 flex flex-col gap-3 mt-1 text-[14px] shadow-lg">
               {menuData.map((m, i) => (
-                <div
-                  className={`flex items-center gap-3 cursor-pointer ${
-                    i === 3 ? "border-t-[.5px] border-t-[#c4c4c4] pt-3" : ""
-                  }`}
-                >
+                <Link to={m.link} className="flex items-center gap-3 cursor-pointer">
                   <img src={m.icon} alt="icon" className="w-[20px] h-[20px]" />
                   {m.title}
-                </div>
+                </Link>
               ))}
+              <div
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  navigate("/login");
+                }}
+                className="flex items-center gap-3 border-t-[.5px] border-t-[#c4c4c4] pt-3 cursor-pointer"
+              >
+                <img
+                  src="img/logout.svg"
+                  alt="logout"
+                  className="w-[20px] h-[20px]"
+                />
+                Log Out
+              </div>
             </div>
           )}
         </div>
