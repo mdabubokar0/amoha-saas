@@ -3,19 +3,25 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [values, setValues] = useState({
+    username: "",
+    password: "",
+  });
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLogin = (event) => {
     event.preventDefault();
     axios
-      .post("https://reqres.in/api/login/", {
-        email: email,
-        password: password,
-      })
+      .post("http://18.212.83.122:8000/api/login/", values)
       .then((res) => {
-        console.log(res);
+        console.log("Login Successful");
         navigate("/dashboard");
         localStorage.setItem("token", res.data.token);
       })
@@ -26,24 +32,23 @@ export const Login = () => {
     <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
       <img src="vite.svg" alt="logo" className="m-auto" />
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleLogin}
         className="border-[.5px] border-[#c4c4c4] rounded-2xl p-10 mt-3"
       >
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 mt-3">
           <label
-            htmlFor="email"
+            htmlFor="username"
             className="text-[12px] text-[#777E90] font-bold uppercase"
           >
-            Email
+            Username
           </label>
           <input
-            type="email"
-            name="email"
-            value={email}
-            placeholder="Enter email"
+            type="text"
+            name="username"
+            placeholder="Enter username"
             required
-            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[372px] h-[48px] rounded-[8px] focus:outline-none"
-            onChange={(e) => setEmail(e.target.value)}
+            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[360px] h-[48px] rounded-[8px] focus:outline-none"
+            onChange={handleChange}
           />
         </div>
         <div className="flex flex-col gap-1 mt-3">
@@ -56,11 +61,10 @@ export const Login = () => {
           <input
             type="password"
             name="password"
-            value={password}
             placeholder="Enter password"
             required
-            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[372px] h-[48px] rounded-[8px] focus:outline-none"
-            onChange={(e) => setPassword(e.target.value)}
+            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[360px] h-[48px] rounded-[8px] focus:outline-none"
+            onChange={handleChange}
           />
         </div>
         <button

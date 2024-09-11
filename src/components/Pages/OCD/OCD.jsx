@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Sidebar } from "../../Sidebar/Sidebar";
 import { SmallBar } from "../../Sidebar/SmallBar";
-import RetinaScan from "./RetinaScan";
 import PatientInput from "./PatientInput";
 import { Navbar } from "../../Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const OCD = () => {
   const [createStep, setCreateStep] = useState(1);
   const [searchStep, setSearchStep] = useState(1);
+  const [pID, setPID] = useState();
+  const [patientID, setPatientID] = useState();
+  const [dID, setDID] = useState();
+  const [diseaseID, setDiseaseID] = useState();
+  const [left_retina, setLeft_Retina] = useState();
+  const [right_retina, setRight_Retina] = useState();
+  const [scanned, setScanned] = useState();
+  const [eyeResult, setEyeResult] = useState();
+
   const [active, setActive] = useState("");
   const [buttonVisible, setButtonVisible] = useState(true);
   const [condition, setCondition] = useState("");
@@ -17,29 +26,10 @@ export const OCD = () => {
 
   const [formData, setFormData] = useState({
     name: "",
-    dob: "",
-    bloodGroup: "",
+    age: "",
+    bloodgroup: "",
     gender: "",
-    address: "",
-    number: "",
-    email: "",
-    condition: "",
-    otherCondition: "",
-    surgeryHistory: "",
-    relevantCondition: "",
-    medication: "",
-    familyHistory: "",
-    symptoms: "",
-    insurance: "",
-    policyNumber: "",
-    occupation: "",
-    consumption: "",
-    lastExam: "",
-    results: "",
-    providerInfo: "",
-    visionProblem: "",
-    contactLens: "",
-    emergencyContact: "",
+    status: "Discharged",
   });
 
   useEffect(() => {
@@ -59,8 +49,70 @@ export const OCD = () => {
   };
 
   const nextSearchStep = () => {
-    if (searchStep < 5) {
+    axios
+      .get("http://18.212.83.122:8000/api/customers/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => setPID(res.data.id))
+      .catch((err) => console.log(err));
+
+    if (patientID == pID) {
+      axios
+        .get("http://127.0.0.1:8000/api/deseases/list/")
+        .then((res) => setDID(res.data.id))
+        .catch((err) => console.log(err));
       setSearchStep(searchStep + 1);
+    } else {
+      setSearchStep(searchStep + 4);
+    }
+  };
+
+  const handleCondition = () => {
+    if (diseaseID == 1) {
+      setSearchStep(searchStep + 1);
+    } else {
+      setSearchStep(searchStep);
+    }
+  };
+
+  const handleScan = (event) => {
+    event.preventDefault();
+
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/deseases/create/diagnose/",
+        {
+          desease: diseaseID,
+          patient: patientID,
+          left_eye: left_retina,
+          right_eye: right_retina,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (searchStep == 3) {
+          setSearchStep(searchStep + 1);
+        } else {
+          setSearchStep(searchStep);
+        }
+      }, setScanned(1))
+      .catch((err) => console.log(err));
+
+    if (scanned) {
+      axios
+        .get("http://127.0.0.1:8000/api/deseases/checkup/list/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => setEyeResult(res.data))
+        .catch((err) => console.log(err));
     }
   };
 
@@ -75,10 +127,6 @@ export const OCD = () => {
     setButtonVisible(true);
     setCreateStep(1);
     setSearchStep(1);
-  };
-
-  const handleCondition = (event) => {
-    setCondition(event.target.value);
   };
 
   const handleFamilyDisease = () => {
@@ -96,7 +144,12 @@ export const OCD = () => {
     e.preventDefault();
 
     axios
-      .post("http://18.212.83.122:8000/api/customers/create/", formData)
+      .post("http://18.212.83.122:8000/api/customers/create/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        formData,
+      })
       .then((res) => console.log("Successful"))
       .catch((err) => console.log(err));
   };
@@ -131,12 +184,17 @@ export const OCD = () => {
                     <h1 className="text-center text-[18px] font-semibold">
                       Search By Patient ID
                     </h1>
-                    <div className="m-5 md:m-20">
-                      <PatientInput
-                        label="Patient ID"
+                    <div className="m-5 md:m-20 flex flex-col gap-2">
+                      <label className="text-[12px] text-[#777E90] font-bold uppercase">
+                        Name
+                      </label>
+                      <input
                         type="number"
-                        name="name"
+                        name="patientID"
+                        value={patientID}
+                        onChange={(e) => setPatientID(e.target.value)}
                         placeholder="Enter Patient ID"
+                        className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] h-[48px] rounded-[8px] focus:outline-none"
                       />
                     </div>
                   </div>
@@ -151,20 +209,20 @@ export const OCD = () => {
                         Conditions or Diseases
                       </label>
                       <select
-                        value={condition}
-                        onChange={handleCondition}
-                        name="conditions"
+                        value={diseaseID}
+                        onChange={(e) => setDiseaseID(e.target.value)}
+                        name="disease"
                         className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] h-[48px] rounded-[8px] focus:outline-none"
                       >
                         <option>Select Condition or Disease</option>
-                        <option value="dr">Diabetic Retinopathy</option>
-                        <option value="me">
+                        <option value="1">Diabetic Retinopathy</option>
+                        <option value="2">
                           Macular Degeneration/AMD (Age Related Macular
                           Degeneration)
                         </option>
-                        <option value="amd">Macular Degeneration</option>
-                        <option value="cataract">Cataract</option>
-                        <option value="glaucoma">Glaucoma</option>
+                        <option value="3">Macular Degeneration</option>
+                        <option value="4">Cataract</option>
+                        <option value="5">Glaucoma</option>
                       </select>
                     </div>
                   </div>
@@ -175,18 +233,46 @@ export const OCD = () => {
                       Retina Scan
                     </h1>
                     <div className="flex items-center gap-3">
-                      <RetinaScan
-                        label="Left Retina"
-                        for="leftRetina"
-                        id="leftRetina"
-                        btn="Upload Image"
-                      />
-                      <RetinaScan
-                        label="Right Retina"
-                        for="rightRetina"
-                        id="rightRetina"
-                        btn="Upload Image"
-                      />
+                      <div className="w-full h-full flex flex-col items-center gap-2 mt-4">
+                        <h1 className="text-[12px] text-[#777E90] font-bold uppercase">
+                          Left Retina
+                        </h1>
+                        <div className="w-full h-[100px] md:h-[150px] rounded-[8px] bg-[#F4F5F6]"></div>
+                        <label
+                          htmlFor="left_retina"
+                          className="text-[12px] font-bold uppercase inline-block bg-[#3174C4] cursor-pointer w-full h-[48px] place-content-center text-center text-white rounded-[8px]"
+                        >
+                          Upload Image
+                        </label>
+                        <input
+                          name="left_retina"
+                          onChange={(e) => setLeft_Retina(e.target.files[0])}
+                          type="file"
+                          required
+                          accept="image/*"
+                          className="w-full h-[150px] rounded-[8px]"
+                        />
+                      </div>
+                      <div className="w-full h-full flex flex-col items-center gap-2 mt-4">
+                        <h1 className="text-[12px] text-[#777E90] font-bold uppercase">
+                          Right Retina
+                        </h1>
+                        <div className="w-full h-[100px] md:h-[150px] rounded-[8px] bg-[#F4F5F6]"></div>
+                        <label
+                          htmlFor="right_retina"
+                          className="text-[12px] font-bold uppercase inline-block bg-[#3174C4] cursor-pointer w-full h-[48px] place-content-center text-center text-white rounded-[8px]"
+                        >
+                          Upload Image
+                        </label>
+                        <input
+                          name="right_retina"
+                          onChange={(e) => setRight_Retina(e.target.files[0])}
+                          type="file"
+                          required
+                          accept="image/*"
+                          className="w-full h-[150px] rounded-[8px]"
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
@@ -196,33 +282,65 @@ export const OCD = () => {
                       Retina Scan
                     </h1>
                     <div className="flex items-center gap-3">
-                      <RetinaScan
-                        label="Left Retina"
-                        for="leftRetina"
-                        id="leftRetina"
-                        btn="ReUpload Image"
-                      />
-                      <RetinaScan
-                        label="Right Retina"
-                        for="rightRetina"
-                        id="rightRetina"
-                        btn="ReUpload Image"
-                      />
+                      <div className="w-full h-full flex flex-col items-center gap-2 mt-4">
+                        <h1 className="text-[12px] text-[#777E90] font-bold uppercase">
+                          Left Retina
+                        </h1>
+                        <div className="w-full h-[100px] md:h-[150px] rounded-[8px] bg-[#F4F5F6]">
+                          {eyeResult.left_eye}
+                        </div>
+                        <label
+                          htmlFor="left_retina"
+                          className="text-[12px] font-bold uppercase inline-block bg-[#3174C4] cursor-pointer w-full h-[48px] place-content-center text-center text-white rounded-[8px]"
+                        >
+                          ReUpload Image
+                        </label>
+                        <input
+                          name="left_retina"
+                          onChange={(e) => setLeft_Retina(e.target.files[0])}
+                          type="file"
+                          required
+                          accept="image/*"
+                          className="w-full h-[150px] rounded-[8px]"
+                        />
+                      </div>
+                      <div className="w-full h-full flex flex-col items-center gap-2 mt-4">
+                        <h1 className="text-[12px] text-[#777E90] font-bold uppercase">
+                          Right Retina
+                        </h1>
+                        <div className="w-full h-[100px] md:h-[150px] rounded-[8px] bg-[#F4F5F6]">
+                          {eyeResult.right_eye}
+                        </div>
+                        <label
+                          htmlFor="right_retina"
+                          className="text-[12px] font-bold uppercase inline-block bg-[#3174C4] cursor-pointer w-full h-[48px] place-content-center text-center text-white rounded-[8px]"
+                        >
+                          ReUpload Image
+                        </label>
+                        <input
+                          name="right_retina"
+                          onChange={(e) => setRight_Retina(e.target.files[0])}
+                          type="file"
+                          required
+                          accept="image/*"
+                          className="w-full h-[150px] rounded-[8px]"
+                        />
+                      </div>
                     </div>
                     <div className="w-full flex items-start justify-between gap-3 text-center my-3 text-[16px]">
                       <div className="w-1/2">
                         <h1 className="text-[20px] font-medium border-b-[1px] border-b-[#c4c4c4] w-[70%] pb-1 mb-1 m-auto">
                           Result
                         </h1>
-                        <h1>DR : 1/1</h1>
-                        <h1>Stage : Mild</h1>
+                        <h1>{eyeResult.left_eye_result}</h1>
+                        <h1>Stage : {eyeResult.left_eye_result_desc}</h1>
                       </div>
                       <div className="w-1/2">
                         <h1 className="text-[20px] font-medium border-b-[1px] border-b-[#c4c4c4] w-[70%] pb-1 mb-1 m-auto">
                           Result
                         </h1>
-                        <h1>DR : 1/1</h1>
-                        <h1>Stage : Mild</h1>
+                        <h1>{eyeResult.right_eye_result}</h1>
+                        <h1>Stage : {eyeResult.right_eye_result_desc}</h1>
                       </div>
                     </div>
                   </div>
@@ -255,7 +373,7 @@ export const OCD = () => {
                     disabled={searchStep === 1}
                     className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       (searchStep === 1 ? "cursor-not-allowed" : "",
-                      searchStep === 4 ? "hidden" : "")
+                      searchStep === 4 || searchStep === 5 ? "hidden" : "")
                     }`}
                   >
                     Back
@@ -271,7 +389,7 @@ export const OCD = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={nextSearchStep}
+                    onClick={handleCondition}
                     className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       searchStep === 2 ? "" : "hidden"
                     }`}
@@ -280,7 +398,7 @@ export const OCD = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={nextSearchStep}
+                    onClick={handleScan}
                     className={`w-[120px] md:w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white ${
                       searchStep === 3 ? "" : "hidden"
                     }`}
@@ -288,7 +406,7 @@ export const OCD = () => {
                     Scan
                   </button>
                   <button
-                    type="button"
+                    type="submit"
                     className={`w-[180px] h-[48px] bg-[#313638] rounded-[8px] text-white m-auto ${
                       searchStep === 4 ? "" : "hidden"
                     }`}
@@ -335,8 +453,8 @@ export const OCD = () => {
                     </label>
                     <input
                       type="date"
-                      name="dob"
-                      value={formData.dob}
+                      name="age"
+                      value={formData.age}
                       onChange={handleInputChange}
                       placeholder="Enter Patient DOB/AGE"
                       className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] h-[48px] rounded-[8px] focus:outline-none"
@@ -350,8 +468,8 @@ export const OCD = () => {
                     </label>
                     <input
                       type="text"
-                      name="bloodGroup"
-                      value={formData.bloodGroup}
+                      name="bloodgroup"
+                      value={formData.bloodgroup}
                       onChange={handleInputChange}
                       placeholder="Enter Patient Blood Group"
                       className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] h-[48px] rounded-[8px] focus:outline-none"

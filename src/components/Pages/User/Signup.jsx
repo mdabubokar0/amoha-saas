@@ -3,24 +3,28 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [values, setValues] = useState({
+    email: "",
+    username: "",
+    password: "",
+  });
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     axios
-      .post("http://18.212.83.122:8000/api/register/", {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      })
+      .post("http://18.212.83.122:8000/api/register/", values)
       .then((res) => {
-        console.log(res.data);
+        console.log("Creation Successful");
+        localStorage.setItem("token", res.data.token);
         navigate("/login");
       })
       .catch((err) => console.log(err));
@@ -33,74 +37,52 @@ export const Signup = () => {
         onSubmit={handleSubmit}
         className="border-[.5px] border-[#c4c4c4] rounded-2xl p-10 mt-3"
       >
-        <div className="flex items-center gap-3">
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="fName"
-              className="text-[12px] text-[#777E90] font-bold uppercase"
-            >
-              First Name
-            </label>
-            <input
-              type="text"
-              name="fName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Enter first name"
-              required
-              className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[180px] h-[48px] rounded-[8px] focus:outline-none"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="lName"
-              className="text-[12px] text-[#777E90] font-bold uppercase"
-            >
-              Last Name
-            </label>
-            <input
-              type="text"
-              name="lName"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Enter last name"
-              required
-              className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[180px] h-[48px] rounded-[8px] focus:outline-none"
-            />
-          </div>
-        </div>
         <div className="flex flex-col gap-1 mt-3">
           <label
-            htmlFor="em"
+            htmlFor="email"
             className="text-[12px] text-[#777E90] font-bold uppercase"
           >
             Email
           </label>
           <input
             type="email"
-            name="em"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            onChange={handleChange}
             placeholder="Enter email"
             required
-            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] h-[48px] rounded-[8px] focus:outline-none"
+            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[360px] h-[48px] rounded-[8px] focus:outline-none"
           />
         </div>
         <div className="flex flex-col gap-1 mt-3">
           <label
-            htmlFor="pwd"
+            htmlFor="username"
+            className="text-[12px] text-[#777E90] font-bold uppercase"
+          >
+            Username
+          </label>
+          <input
+            type="text"
+            name="username"
+            onChange={handleChange}
+            placeholder="Enter username"
+            required
+            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[360px] h-[48px] rounded-[8px] focus:outline-none"
+          />
+        </div>
+        <div className="flex flex-col gap-1 mt-3">
+          <label
+            htmlFor="password"
             className="text-[12px] text-[#777E90] font-bold uppercase"
           >
             Password
           </label>
           <input
             type="password"
-            name="pwd"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            onChange={handleChange}
             placeholder="Enter password"
             required
-            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] h-[48px] rounded-[8px] focus:outline-none"
+            className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[360px] h-[48px] rounded-[8px] focus:outline-none"
           />
         </div>
         <button

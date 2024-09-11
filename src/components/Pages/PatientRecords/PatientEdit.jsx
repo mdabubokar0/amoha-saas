@@ -37,7 +37,12 @@ export const PatientEdit = () => {
     event.preventDefault();
 
     axios
-      .put(`http://18.212.83.122:8000/api/customers/${id}`, patientEdit)
+      .put(`http://18.212.83.122:8000/api/customers/${id}/update/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        patientEdit,
+      })
       .then((res) => {
         setPatientEdit(res.data);
         navigate("/login");

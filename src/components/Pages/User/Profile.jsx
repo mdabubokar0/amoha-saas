@@ -18,7 +18,7 @@ export const Profile = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
-        .then((res) => setProfile(res.data.data))
+        .then((res) => setProfile(res.data))
         .catch((err) => console.log(err));
     }
   }, []);
@@ -58,40 +58,6 @@ export const Profile = () => {
             onSubmit={handleUpdateProfile}
             className="border-[.5px] border-[#c4c4c4] rounded-2xl p-10 mt-3"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="fName"
-                  className="text-[12px] text-[#777E90] font-bold uppercase"
-                >
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  name="fName"
-                  value={profile.firstName}
-                  onChange={handleInputChange}
-                  placeholder="Enter first name"
-                  className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[180px] h-[48px] rounded-[8px] focus:outline-none"
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="lName"
-                  className="text-[12px] text-[#777E90] font-bold uppercase"
-                >
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  name="lName"
-                  value={profile.lastName}
-                  onChange={handleInputChange}
-                  placeholder="Enter last name"
-                  className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] w-[180px] h-[48px] rounded-[8px] focus:outline-none"
-                />
-              </div>
-            </div>
             <div className="flex flex-col gap-1 mt-3">
               <label
                 htmlFor="em"
@@ -101,10 +67,27 @@ export const Profile = () => {
               </label>
               <input
                 type="email"
-                name="em"
+                name="email"
                 value={profile.email}
                 onChange={handleInputChange}
                 placeholder="Enter email"
+                required
+                className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] h-[48px] rounded-[8px] focus:outline-none"
+              />
+            </div>
+            <div className="flex flex-col gap-1 mt-3">
+              <label
+                htmlFor="em"
+                className="text-[12px] text-[#777E90] font-bold uppercase"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                value={profile.username}
+                onChange={handleInputChange}
+                placeholder="Enter username"
                 required
                 className="px-3 text-[12px] text-[#777E90] bg-[#F4F5F6] h-[48px] rounded-[8px] focus:outline-none"
               />

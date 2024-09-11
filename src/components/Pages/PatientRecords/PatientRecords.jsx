@@ -15,15 +15,25 @@ export const PatientRecords = () => {
       navigate("/login");
     } else {
       axios
-        .get("http://18.212.83.122:8000/api/customers", {
+        .get("http://18.212.83.122:8000/api/customers/", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
-        .then((res) => setPatientList(res.data.data))
+        .then((res) => setPatientList(res.data))
         .catch((err) => console.log(err));
     }
   }, []);
+
+  const handleDelete = (id) => {
+    axios.delete(`http://18.212.83.122:8000/api/customers/${id}`,{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    .then(res => navigate('/patientrecords'))
+    .catch(err => console.log(err))
+  }
 
   return (
     <div>
@@ -62,7 +72,7 @@ export const PatientRecords = () => {
                     <td className="px-3">{p.blood}</td>
                     <td className="px-3">{p.status}</td>
                     <td>
-                      <Link to={`/patientprofile/${p.id}`}>
+                      <Link to={`/patientedit/${p.id}`}>
                         <img
                           src="img/details.svg"
                           alt="details"
@@ -72,6 +82,7 @@ export const PatientRecords = () => {
                     </td>
                     <td>
                       <img
+                      onClick={() => handleDelete(p.id)}
                         src="img/delete.svg"
                         alt="delete"
                         className="m-auto cursor-pointer"
