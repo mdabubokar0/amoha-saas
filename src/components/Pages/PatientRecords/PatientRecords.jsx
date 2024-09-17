@@ -25,16 +25,6 @@ export const PatientRecords = () => {
     }
   }, []);
 
-  const handleDelete = (id) => {
-    axios.delete(`http://18.212.83.122:8000/api/customers/${id}`,{
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
-    })
-    .then(res => navigate('/patientrecords'))
-    .catch(err => console.log(err))
-  }
-
   return (
     <div>
       <Navbar />
@@ -82,7 +72,6 @@ export const PatientRecords = () => {
                     </td>
                     <td>
                       <img
-                      onClick={() => handleDelete(p.id)}
                         src="img/delete.svg"
                         alt="delete"
                         className="m-auto cursor-pointer"

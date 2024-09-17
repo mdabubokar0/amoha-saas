@@ -11,19 +11,30 @@ import axios from "axios";
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [patientList, setPatientList] = useState([]);
+  const [user, setUser] = useState('')
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
     } else {
-      axios
-        .get("http://18.212.83.122:8000/api/customers", {
+      const fetchData = () => {
+        const req1 = axios.get("http://18.212.83.122:8000/api/customers/")
+        const req2 = axios.get("http://18.212.83.122:8000/api/user/details/")
+
+        Promise.all([req1, req2], {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
-        .then((res) => setPatientList(res.data.data))
+        .then(res => {
+          const [res1, res2] = res;
+          setPatientList(res1.data)
+          setUser(res2.data.name)
+        })
         .catch((err) => console.log(err));
+      }
+
+      fetchData();
     }
   }, []);
 
@@ -41,7 +52,7 @@ export const Dashboard = () => {
                     Welcome
                   </h4>
                   <h1 className="text-[18px] md:text-[26px] font-semibold">
-                    Dr. Anita K
+                    {user}
                   </h1>
                   <h4 className="text-[12px] md:text-[14px] font-normal">
                     Opthalmologist, Eye Specialist

@@ -1,10 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import menuData from "./menuData.json";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Navbar = () => {
   const [menu, setMenu] = useState(false);
+  const [name, setName] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      useNavigate("/login");
+    } else {
+      axios
+        .get("http://18.212.83.122:8000/api/user/details/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => setName(res.data.name))
+        .catch((err) => console.log(err));
+    }
+  }, []);
 
   const handleMenu = () => {
     setMenu(!menu);
@@ -28,8 +45,7 @@ export const Navbar = () => {
                 className="rounded-[50px]"
               />
               <div className="hidden md:flex flex-col">
-                <h2 className="text-[16px]">Anita K</h2>
-                <h4 className="text-[12px] text-[#696969]">Opthalmologist</h4>
+                <h2 className="text-[16px]">{name}</h2>
               </div>
             </div>
             <div className="hidden md:flex">
@@ -39,7 +55,10 @@ export const Navbar = () => {
           {menu && (
             <div className="absolute left-[100%] -translate-x-[100%] bg-white border-[.5px] border-[#c4c4c4] rounded-[20px] w-[200px] md:w-full p-5 flex flex-col gap-3 mt-1 text-[14px] shadow-lg">
               {menuData.map((m, i) => (
-                <Link to={m.link} className="flex items-center gap-3 cursor-pointer">
+                <Link
+                  to={m.link}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
                   <img src={m.icon} alt="icon" className="w-[20px] h-[20px]" />
                   {m.title}
                 </Link>
