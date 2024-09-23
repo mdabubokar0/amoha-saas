@@ -3,7 +3,6 @@ import { Sidebar } from "../../Sidebar/Sidebar";
 import { SmallBar } from "../../Sidebar/SmallBar";
 import ReportCard from "./ReportCard";
 import reportInfo from "./reportInfo.json";
-import patientData from "../PatientRecords/patientData.json";
 import { Navbar } from "../../Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -18,22 +17,22 @@ export const Dashboard = () => {
       navigate("/login");
     } else {
       const fetchData = () => {
-        const req1 = axios.get("http://18.212.83.122:8000/api/customers/")
-        const req2 = axios.get("http://18.212.83.122:8000/api/user/details/")
-
-        Promise.all([req1, req2], {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(res => {
-          const [res1, res2] = res;
-          setPatientList(res1.data)
-          setUser(res2.data.name)
-        })
-        .catch((err) => console.log(err));
-      }
-
+        const headers = {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        };
+  
+        const req1 = axios.get("http://18.212.83.122:8000/api/customers/", { headers });
+        const req2 = axios.get("http://18.212.83.122:8000/api/user/details/", { headers });
+  
+        Promise.all([req1, req2])
+          .then(res => {
+            const [res1, res2] = res;
+            setPatientList(res1.data);
+            setUser(res2.data.name);
+          })
+          .catch((err) => console.log(err));
+      };
+  
       fetchData();
     }
   }, []);
