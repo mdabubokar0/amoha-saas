@@ -18,7 +18,7 @@ export const Dashboard = () => {
     } else {
       const fetchData = () => {
         const headers = {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Token ${localStorage.getItem("token")}`,
         };
   
         const req1 = axios.get("http://18.212.83.122:8000/api/customers/", { headers });

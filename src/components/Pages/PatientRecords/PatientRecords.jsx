@@ -17,7 +17,7 @@ export const PatientRecords = () => {
       axios
         .get("http://18.212.83.122:8000/api/customers/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Token ${localStorage.getItem("token")}`,
           },
         })
         .then((res) => setPatientList(res.data))

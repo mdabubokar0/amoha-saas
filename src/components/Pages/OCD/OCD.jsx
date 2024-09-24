@@ -52,7 +52,7 @@ export const OCD = () => {
     axios
       .get("http://18.212.83.122:8000/api/customers/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Token ${localStorage.getItem("token")}`,
         },
       })
       .then((res) => setPID(res.data.id))
@@ -91,7 +91,7 @@ export const OCD = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Token ${localStorage.getItem("token")}`,
           },
         }
       )
@@ -108,7 +108,7 @@ export const OCD = () => {
       axios
         .get("http://127.0.0.1:8000/api/deseases/checkup/list/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Token ${localStorage.getItem("token")}`,
           },
         })
         .then((res) => setEyeResult(res.data))
@@ -146,7 +146,7 @@ export const OCD = () => {
     axios
       .post("http://18.212.83.122:8000/api/customers/create/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Token ${localStorage.getItem("token")}`,
         },
         formData,
       })

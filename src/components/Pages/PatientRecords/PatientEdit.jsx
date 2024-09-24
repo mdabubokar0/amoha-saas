@@ -18,7 +18,7 @@ export const PatientEdit = () => {
       axios
         .get(`http://18.212.83.122:8000/api/customers/${id}`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Token ${localStorage.getItem("token")}`,
           },
         })
         .then((res) => setPatientEdit(res.data.data))
@@ -39,7 +39,7 @@ export const PatientEdit = () => {
     axios
       .put(`http://18.212.83.122:8000/api/customers/${id}/update/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Token ${localStorage.getItem("token")}`,
         },
         patientEdit,
       })

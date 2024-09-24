@@ -15,7 +15,7 @@ export const Profile = () => {
       axios
         .get("http://18.212.83.122:8000/api/user/details/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Token ${localStorage.getItem("token")}`,
           },
         })
         .then((res) => setProfile(res.data))
