@@ -34,11 +34,10 @@ export const Profile = () => {
     e.preventDefault();
 
     axios
-      .post("http://18.212.83.122:8000/api/user/details/", {
+      .post("http://18.212.83.122:8000/api/user/details/", profile, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        profile,
       })
       .then((res) => {
         setProfile(res.data);

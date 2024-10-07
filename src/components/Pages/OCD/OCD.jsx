@@ -29,7 +29,7 @@ export const OCD = () => {
     age: "",
     bloodgroup: "",
     gender: "",
-    status: "Discharged",
+    status: "",
   });
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export const OCD = () => {
 
     if (patientID == pID) {
       axios
-        .get("http://127.0.0.1:8000/api/deseases/list/")
+        .get("http://18.212.83.122:8000/api/deseases/list/")
         .then((res) => setDID(res.data.id))
         .catch((err) => console.log(err));
       setSearchStep(searchStep + 1);
@@ -82,7 +82,7 @@ export const OCD = () => {
 
     axios
       .post(
-        "http://127.0.0.1:8000/api/deseases/create/diagnose/",
+        "http://18.212.83.122:8000/api/deseases/create/diagnose/",
         {
           desease: diseaseID,
           patient: patientID,
@@ -106,7 +106,7 @@ export const OCD = () => {
 
     if (scanned) {
       axios
-        .get("http://127.0.0.1:8000/api/deseases/checkup/list/", {
+        .get("http://18.212.83.122:8000/api/deseases/checkup/list/", {
           headers: {
             Authorization: `Token ${localStorage.getItem("token")}`,
           },
@@ -144,14 +144,19 @@ export const OCD = () => {
     e.preventDefault();
 
     axios
-      .post("http://18.212.83.122:8000/api/customers/create/", {
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
+      .post(
+        "http://18.212.83.122:8000/api/customers/create/",
         formData,
-      })
+        {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((res) => console.log("Successful"))
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        console.log(err.response ? err.response.data : err.message)
+      );
   };
 
   return (
