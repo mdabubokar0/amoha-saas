@@ -10,30 +10,20 @@ import axios from "axios";
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [patientList, setPatientList] = useState([]);
-  const [user, setUser] = useState('')
+  const [user, setUser] = useState("");
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
     } else {
-      const fetchData = () => {
-        const headers = {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        };
-  
-        const req1 = axios.get("http://18.212.83.122:8000/api/customers/", { headers });
-        const req2 = axios.get("http://18.212.83.122:8000/api/user/details/", { headers });
-  
-        Promise.all([req1, req2])
-          .then(res => {
-            const [res1, res2] = res;
-            setPatientList(res1.data);
-            setUser(res2.data.name);
-          })
-          .catch((err) => console.log(err));
-      };
-  
-      fetchData();
+      axios
+        .get("http://18.212.83.122:8000/api/user/details", {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => setUser(res.data.name))
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -78,27 +68,6 @@ export const Dashboard = () => {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="px-5 md:px-10 py-5 md:py-8 bg-white rounded-[20px] border-[.5px] border-[#c4c4c4]">
-              <h3 className="text-[18px] font-medium">Recent Patients</h3>
-              <table className="w-full border-collapse rounded-[20px] mt-4 text">
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th className="hide">Gender</th>
-                  <th className="px-3 hide">Blood</th>
-                  <th>Status</th>
-                </tr>
-                {patientList.map((p) => (
-                  <tr>
-                    <td>{p.id}</td>
-                    <td>{p.name}</td>
-                    <td className="hide">{p.gender}</td>
-                    <td className="hide">{p.blood}</td>
-                    <td>{p.status}</td>
-                  </tr>
-                ))}
-              </table>
             </div>
           </div>
           <div className="lg:w-[300px] flex-col flex md:flex-row lg:flex-col gap-4 md:gap-3 w-full">

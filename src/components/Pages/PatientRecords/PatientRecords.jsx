@@ -9,21 +9,35 @@ import { Link } from "react-router-dom";
 export const PatientRecords = () => {
   const navigate = useNavigate();
   const [patientList, setPatientList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    const token = localStorage.getItem("token");
+  
+    if (!token) {
       navigate("/login");
     } else {
       axios
         .get("http://18.212.83.122:8000/api/customers/", {
           headers: {
-            Authorization: `Token ${localStorage.getItem("token")}`,
+            Authorization: `Token ${token}`,
           },
         })
-        .then((res) => setPatientList(res.data))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          console.log(res.data);  // Debugging the API response
+          setPatientList(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setError("Failed to fetch patient records");
+          setLoading(false);
+        });
     }
-  }, []);
+  }, [navigate]);
+  
+  
 
   return (
     <div>
@@ -43,44 +57,55 @@ export const PatientRecords = () => {
                 />
               </div>
             </div>
-            <div className="relative overflow-x-auto">
-              <table className="w-full border-collapse rounded-[20px] mt-4">
-                <tr>
-                  <th className="px-3">ID</th>
-                  <th className="px-3">Name</th>
-                  <th className="px-3">Gender</th>
-                  <th className="px-3">Blood</th>
-                  <th className="px-3">Status</th>
-                  <th className="px-3">Details</th>
-                  <th className="px-3">Delete</th>
-                </tr>
-                {patientList.map((p) => (
-                  <tr>
-                    <td className="px-3">{p.id}</td>
-                    <td className="px-3">{p.name}</td>
-                    <td className="px-3">{p.gender}</td>
-                    <td className="px-3">{p.blood}</td>
-                    <td className="px-3">{p.status}</td>
-                    <td>
-                      <Link to={`/patientedit/${p.id}`}>
-                        <img
-                          src="img/details.svg"
-                          alt="details"
-                          className="m-auto cursor-pointer"
-                        />
-                      </Link>
-                    </td>
-                    <td>
-                      <img
-                        src="img/delete.svg"
-                        alt="delete"
-                        className="m-auto cursor-pointer"
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </table>
-            </div>
+
+            {error && <p className="text-red-500">{error}</p>}
+
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <div className="relative overflow-x-auto">
+                <table className="w-full border-collapse rounded-[20px] mt-4">
+                  <thead>
+                    <tr>
+                      <th className="px-3">ID</th>
+                      <th className="px-3">Name</th>
+                      <th className="px-3">Gender</th>
+                      <th className="px-3">Blood</th>
+                      <th className="px-3">Status</th>
+                      <th className="px-3">Details</th>
+                      <th className="px-3">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {patientList.map((p) => (
+                      <tr key={p.id}>
+                        <td className="px-3">{p.id}</td>
+                        <td className="px-3">{p.name}</td>
+                        <td className="px-3">{p.gender}</td>
+                        <td className="px-3">{p.blood}</td>
+                        <td className="px-3">{p.status}</td>
+                        <td>
+                          <Link to={`/patientedit/${p.id}`}>
+                            <img
+                              src="img/details.svg"
+                              alt="details"
+                              className="m-auto cursor-pointer"
+                            />
+                          </Link>
+                        </td>
+                        <td>
+                          <img
+                            src="img/delete.svg"
+                            alt="delete"
+                            className="m-auto cursor-pointer"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>

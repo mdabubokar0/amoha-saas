@@ -29,7 +29,7 @@ export const OCD = () => {
     age: "",
     bloodgroup: "",
     gender: "",
-    status: "",
+    status: "Onboarding"
   });
 
   useEffect(() => {
