@@ -11,10 +11,11 @@ export const PatientRecords = () => {
   const [patientList, setPatientList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-  
+
     if (!token) {
       navigate("/login");
     } else {
@@ -25,7 +26,7 @@ export const PatientRecords = () => {
           },
         })
         .then((res) => {
-          console.log(res.data);  // Debugging the API response
+          console.log(res.data);
           setPatientList(res.data);
           setLoading(false);
         })
@@ -36,8 +37,29 @@ export const PatientRecords = () => {
         });
     }
   }, [navigate]);
-  
-  
+
+  const handleDelete = (id) => {
+    const token = localStorage.getItem("token");
+    if (window.confirm("Are you sure you want to delete this patient?")) {
+      axios
+        .delete(`http://18.212.83.122:8000/api/customers/${id}/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then(() => {
+          setPatientList(patientList.filter((patient) => patient.id !== id));
+        })
+        .catch((err) => {
+          console.error(err);
+          setError("Failed to delete patient record");
+        });
+    }
+  };
+
+  const filteredPatients = patientList.filter((p) =>
+    p.id.toString().includes(searchTerm)
+  );
 
   return (
     <div>
@@ -54,6 +76,8 @@ export const PatientRecords = () => {
                   type="search"
                   placeholder="Search Patient by ID"
                   className="focus:outline-none bg-[#EFF3F4] h-full w-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
@@ -67,17 +91,31 @@ export const PatientRecords = () => {
                 <table className="w-full border-collapse rounded-[20px] mt-4">
                   <thead>
                     <tr>
-                      <th className="px-3">ID</th>
-                      <th className="px-3">Name</th>
-                      <th className="px-3">Gender</th>
-                      <th className="px-3">Blood</th>
-                      <th className="px-3">Status</th>
-                      <th className="px-3">Details</th>
-                      <th className="px-3">Delete</th>
+                      <th className="px-3" scope="col">
+                        ID
+                      </th>
+                      <th className="px-3" scope="col">
+                        Name
+                      </th>
+                      <th className="px-3" scope="col">
+                        Gender
+                      </th>
+                      <th className="px-3" scope="col">
+                        Blood
+                      </th>
+                      <th className="px-3" scope="col">
+                        Status
+                      </th>
+                      <th className="px-3" scope="col">
+                        Details
+                      </th>
+                      <th className="px-3" scope="col">
+                        Delete
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {patientList.map((p) => (
+                    {filteredPatients.map((p) => (
                       <tr key={p.id}>
                         <td className="px-3">{p.id}</td>
                         <td className="px-3">{p.name}</td>
@@ -98,6 +136,7 @@ export const PatientRecords = () => {
                             src="img/delete.svg"
                             alt="delete"
                             className="m-auto cursor-pointer"
+                            onClick={() => handleDelete(p.id)}
                           />
                         </td>
                       </tr>
