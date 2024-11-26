@@ -1,16 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.h{
+@layer base {
+  /* Global defaults */
+  * {
+    font-family: theme("fontFamily.texting");
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+  }
+
+  /* Headings customization */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: theme(fontWeight.semibold);
+  }
+
+  /* Links customization */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Global body styles */
+  body {
+    background-color: theme("colors.bgColor");
+    color: theme("colors.font1");
+    line-height: 1.6;
+  }
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  /* Set consistent image styling */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Inputs and buttons */
+  input,
+  button {
+    font-family: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+input[type="radio"] {
+  display: none;
+  cursor: pointer;
+}
+input[type="radio"]:checked + label {
+  background-color: theme("colors.primary");
+  color: white;
+}
+
+.h {
   height: calc(100vh - 70px);
 }
 
-.bg{
-  background: linear-gradient(to right, #ffffff 5%, #EFF0F6 95%);
+.bg {
+  background: linear-gradient(to right, #ffffff 5%, #eff0f6 95%);
 }
 
-th, td{
+th,
+td {
   height: 60px;
   border: 1px solid #c4c4c4;
   text-align: center;
@@ -22,6 +88,6 @@ th, td{
   }
 }
 
-input[type="file"]{
+input[type="file"] {
   display: none;
 }
