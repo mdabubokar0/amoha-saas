@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet, HelmetData } from "react-helmet-async";
 
-export const ErrorPage = () => {
+const PageNotFound = () => {
   const helmetData = new HelmetData({});
   return (
     <div className="text-[100px] text-center b">
@@ -13,3 +13,4 @@ export const ErrorPage = () => {
     </div>
   );
 };
+export default PageNotFound;

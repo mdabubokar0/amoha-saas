@@ -1,4 +1,11 @@
 import { BrowserRouter as Main, Route, Routes } from "react-router-dom";
+
+import { Helmet, HelmetProvider } from "react-helmet-async";
+import HomePage from "./components/Pages/HomePage";
+import LoginPage from "./components/Pages/LoginPage";
+import DemoPage from "./components/Pages/DemoPage";
+import PageNotFound from "./components/Pages/PageNotFound";
+
 import { Dashboard } from "./components/Pages/Dashboard/Dashboard";
 import { VisionTest } from "./components/Pages/VisionTest/VisionTest";
 import { PatientRecords } from "./components/Pages/PatientRecords/PatientRecords";
@@ -9,12 +16,6 @@ import { Signup } from "./components/Pages/User/Signup";
 import { PatientProfile } from "./components/Pages/PatientRecords/PatientProfile";
 import { PatientEdit } from "./components/Pages/PatientRecords/PatientEdit";
 import { Profile } from "./components/Pages/User/Profile";
-
-import { Helmet, HelmetProvider } from "react-helmet-async";
-import { HomePage } from "./components/Pages/HomePage";
-import { LoginPage } from "./components/Pages/LoginPage";
-import { DemoPage } from "./components/Pages/DemoPage";
-import { ErrorPage } from "./components/Pages/ErrorPage";
 
 function App() {
   return (
@@ -46,7 +47,7 @@ function App() {
           <Route exact path="/patientedit/:id" element={<PatientEdit />} />
           <Route exact path="/ocd" element={<OCD />} />
           <Route exact path="/reports" element={<Reports />} />
-          <Route path="*" element={<ErrorPage />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Main>
     </HelmetProvider>
