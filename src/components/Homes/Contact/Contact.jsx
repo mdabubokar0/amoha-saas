@@ -7,37 +7,11 @@ import { faBuilding } from "@fortawesome/free-solid-svg-icons";
 const Contact = () => {
   const form = useRef();
   const serviceId = import.meta.env.VITE_SERVICE_ID;
-  const templateId = import.meta.env.VITE_TEMPLATE_ID;
+  const templateId = import.meta.env.VITE_TEMPLATE_ID_FOR_CONNECT_WITH_US;
   const publicKeyId = import.meta.env.VITE_PUBLIC_KEY_ID;
 
   const sendEmail = (e) => {
     e.preventDefault();
-
-    // emailjs
-    //   .sendForm(
-    //     "service_7tgyrxh",
-    //     "template_9s16rla",
-    //     form.current,
-    //     "X2BgLpJsY18HGn10P"
-    //   )
-    //   .then(
-    //     (result) => {
-    //       console.log(result.text);
-    //       alert("Successfully send");
-    //       document.getElementById("name").value = "";
-    //       document.getElementById("profession").value = "";
-    //       document.getElementById("company").value = "";
-    //       document.getElementById("email").value = "";
-    //       document.getElementById("city").value = "";
-    //       document.getElementById("state").value = "";
-    //       document.getElementById("country").value = "";
-    //       document.getElementById("message").value = "";
-    //     },
-    //     (error) => {
-    //       console.log(error.text);
-    //     }
-    //   );
-
     emailjs
       .sendForm(serviceId, templateId, form.current, publicKeyId)
       .then(
