@@ -66,28 +66,3 @@ input[type="radio"]:checked + label {
   background-color: theme("colors.primary");
   color: white;
 }
-
-.h {
-  height: calc(100vh - 70px);
-}
-
-.bg {
-  background: linear-gradient(to right, #ffffff 5%, #eff0f6 95%);
-}
-
-th,
-td {
-  height: 60px;
-  border: 1px solid #c4c4c4;
-  text-align: center;
-}
-
-@media (max-width: 767px) {
-  .hide {
-    display: none;
-  }
-}
-
-input[type="file"] {
-  display: none;
-}

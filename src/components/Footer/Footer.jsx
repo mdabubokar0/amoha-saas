@@ -27,7 +27,7 @@ const Footer = () => {
       );
   };
   return (
-    <div id="footer" className="bg-black mt-[50px] xl:mt-[125px]">
+    <div id="footer" className="bg-black">
       <div className="w-full 2xl:w-[1366px] m-auto pt-[80px] px-9">
         <div className="flex flex-col justify-between xl:flex-row gap-[50px]">
           <motion.div

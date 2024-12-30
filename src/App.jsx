@@ -1,9 +1,7 @@
 import { BrowserRouter as Main, Route, Routes } from "react-router-dom";
-
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import HomePage from "./components/Pages/HomePage";
 import LoginPage from "./components/Pages/LoginPage";
-import DemoPage from "./components/Pages/DemoPage";
 import PageNotFound from "./components/Pages/PageNotFound";
 
 import { Dashboard } from "./components/Pages/Dashboard/Dashboard";
@@ -31,8 +29,6 @@ function App() {
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/loginpage" element={<LoginPage />} />
-          <Route exact path="/demopage" element={<DemoPage />} />
-
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/profile" element={<Profile />} />

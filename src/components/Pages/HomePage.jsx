@@ -1,21 +1,11 @@
-import React from "react";
-import Home from "../Homes/Home/Home";
-import Diseases from "../Homes/Diseases/Diseases";
-import Ai from "../Homes/Ai/Ai";
-import Train from "../Homes/Train/Train";
-import Feedback from "../Homes/Feedback/Feedback";
 import Footer from "../Footer/Footer";
-import Contact from "../Homes/Contact/Contact";
 
 const HomePage = () => {
   return (
     <div>
-      <Home />
-      <Diseases />
-      <Ai />
-      <Train />
-      <Feedback />
-      <Contact />
+      <div className="w-screen h-screen flex justify-center bg-primary text-white text-6xl font-semibold items-center">
+        Amoha.io
+      </div>
       <Footer />
     </div>
   );
