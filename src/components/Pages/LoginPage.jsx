@@ -1,6 +1,5 @@
 import React from "react";
 import Login from "../Login/Login";
-import Footer from "../Footer/Footer";
 
 import { Helmet, HelmetData } from "react-helmet-async";
 
@@ -13,7 +12,6 @@ const LoginPage = () => {
         <link rel="canonical" href="https://amoha.ai/loginpage" />
       </Helmet>
       <Login />
-      <Footer />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Login = () => {
+  const SITE_URL = import.meta.env.VITE_SITE_URL;
   return (
     <div id="login">
       <div className="h-[90vh] bg-bg1">
@@ -15,7 +16,7 @@ const Login = () => {
             whileInView={{ y: 0 }}
             transition={{ ease: "linear", duration: 0.5 }}
           >
-            <Link to="/">
+            <Link to={`${SITE_URL}`}>
               <img
                 src="img/logo.gif"
                 alt="logo"
@@ -23,12 +24,22 @@ const Login = () => {
               />
             </Link>
             <div className="text-white font-semibold flex items-center gap-2 lg:gap-[20px] text-xs sm:text-sm lg:text-base xl:pr-5">
-              <Link
-                to="/demopage"
+              <a
+                href={`${SITE_URL}/demopage`}
+                // target="_blank"
+                rel="noopener noreferrer"
                 className="font-heading cursor-pointer w-[100px] h-[40px] md:h-[54px] md:w-[140px] lg:w-[180px] border-white border-[1px] rounded-lg flex items-center justify-center hover:bg-bgColor hover:text-primary transition-all"
               >
                 Book a Demo
-              </Link>
+              </a>
+
+              {/* <Link
+                to="/demopage"
+                className="font-heading cursor-pointer w-[100px] h-[40px] md:h-[54px] md:w-[140px] lg:w-[180px] border-white border-[1px] rounded-lg flex items-center justify-center hover:bg-bgColor hover:text-primary transition-all"
+              >
+                {" "}
+                Book a Demo
+              </Link> */}
             </div>
           </motion.div>
           <div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-[280px] md:w-[400px] xl:w-[350px] 2xl:w-[400px] m-auto bg-[#FAFAFA] shadow-md p-5 md:p-10 xl:p-5 2xl:p-10 xl:px-10">
