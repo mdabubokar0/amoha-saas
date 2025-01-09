@@ -1,11 +1,39 @@
-import React from "react";
-import InputField from "../Input/InputField";
-import Button from "../Input/Button";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import Input from "../Utils/Input";
+import Password from "../Utils/Password";
+
+import Button from "../Utils/Button";
+import { useLogin } from "../Hooks/useLogin";
 
 const Login = () => {
   const SITE_URL = import.meta.env.VITE_SITE_URL;
+  // const mutation = useLogin();
+  const { mutate, isLoading, isError, isSuccess, error } = useLogin();
+  console.log(isLoading, isError, isSuccess, error);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const validateEmail = (value) => {
+    const trimmedValue = value.trim();
+    const emailPattern = /^[A-Za-z0-9+._]+@[A-Za-z0-9]+\.[A-Za-z]{2}/i;
+    return (
+      emailPattern.test(trimmedValue) || "Please enter a valid email address."
+    );
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    mutate(data);
+  };
+
   return (
     <div id="login">
       <div className="h-[90vh] bg-bg1">
@@ -42,37 +70,73 @@ const Login = () => {
               </Link> */}
             </div>
           </motion.div>
-          <div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-[280px] md:w-[400px] xl:w-[350px] 2xl:w-[400px] m-auto bg-[#FAFAFA] shadow-md p-5 md:p-10 xl:p-5 2xl:p-10 xl:px-10">
+          <div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-[280px] md:w-[400px] xl:w-[350px] 2xl:w-[400px] m-auto bg-[#FAFAFA] shadow-md p-5 md:p-10 xl:p-5 2xl:p-10 xl:px-10 rounded-md">
             <h1 className="text-center text-3xl text-font1 font-semibold">
               Login
             </h1>
-            <div className="mt-4 xl:mt-0 2xl:mt-4">
-              <InputField
-                types="email"
-                text="Email/Username"
+
+            <motion.form
+              onSubmit={handleSubmit(onSubmit)}
+              initial={{ y: -30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, ease: "linear", duration: 0.5 }}
+              className="text-font2 text-sm flex flex-col gap-[15px]"
+            >
+              <Input
+                className="flex flex-col"
+                label="Email"
+                errors={errors}
+                type="email"
                 id="email"
-                name="user_email"
+                name="email"
                 placeholder="e.g., john.doe@example.com"
+                {...register("email", {
+                  required: "This field is required.",
+                  validate: validateEmail,
+                  onBlur: (e) => setValue("email", e.target.value.trim()),
+                })}
               />
-              <InputField
-                types="text"
-                text="Username"
-                id="username"
-                name="user_name"
-                placeholder="e.g., john.doe"
-              />
-              <InputField
-                types="password"
-                text="Password"
+
+              <Password
+                className="flex flex-col"
+                label="Password"
+                errors={errors}
+                type="password"
                 id="password"
-                name="user_password"
+                name="password"
                 placeholder="e.g., ********"
+                {...register("password", {
+                  required: "This field is required.",
+                  validate: (value) =>
+                    value.trim() !== "" || "Field cannot be empty spaces.",
+                  pattern: {
+                    value:
+                      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/i,
+                    message:
+                      "Please enter at least minimum six characters, include at least one letter, one number and one special character.",
+                  },
+
+                  // minLength: {
+                  //   value: 3,
+                  //   message: "Please enter at least 3 characters.",
+                  // },
+                  onBlur: (e) => setValue("password", e.target.value.trim()),
+                })}
               />
-            </div>
-            <p className="my-4 xl:my-2 2xl:my-4 text-font1 text-center text-sm font-medium">
-              Forgot your password?
-            </p>
-            <Button title="Login" />
+              <p className="text-font1 text-center text-sm font-medium">
+                Forgot your password?
+              </p>
+              <Button
+                disabled={isLoading}
+                isLoading={isLoading}
+                text="Login"
+                width="w-full"
+                size="18px"
+                rounded="xl"
+                fontWeight="semibold"
+              />
+            </motion.form>
+
             <p className="my-4 xl:my-2 2xl:my-4 text-font1 text-center text-sm font-medium">
               New to our platform?
               <Link
