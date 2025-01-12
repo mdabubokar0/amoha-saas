@@ -1,11 +1,8 @@
 export default {
-  CONTACT_FORM: {
-    url: "/api/landing_page/contact_form/",
+  LOGIN: {
+    url: "/api/login/",
   },
-  DEMO_REQUEST: {
-    url: "/api/landing_page/demo_request/",
-  },
-  LANDING_PAGE_NEWSLETTER: {
-    url: "/api/landing_page/subscribe_newsletter_create/",
+  FETCH_USER_DETAILS: {
+    url: "/api/user/details/",
   },
 };

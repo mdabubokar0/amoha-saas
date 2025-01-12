@@ -1,28 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import menuData from "./menuData.json";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useUserDetails } from "../Hooks/UserHooks";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [name, setName] = useState("");
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    } else {
-      axios
-        .get("http://18.212.83.122:8000/api/user/details/", {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
-        .then((res) => setName(res.data.user.name))
-        .catch((err) => console.log(err));
-    }
-  }, [token]);
+  const { data, error, isPending } = useUserDetails();
 
   const handleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -76,7 +61,7 @@ export const Navbar = () => {
               <div
                 onClick={() => {
                   localStorage.removeItem("token");
-                  navigate("/login");
+                  navigate("/");
                 }}
                 className="flex items-center gap-3 border-t-[.5px] border-t-[#c4c4c4] pt-3 cursor-pointer"
               >

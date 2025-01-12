@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import Input from "../Utils/Input";
 import Password from "../Utils/Password";
-
 import Button from "../Utils/Button";
-import { useLogin } from "../Hooks/useLogin";
+import { useLogin } from "../Hooks/authHooks";
 
 const Login = () => {
   const SITE_URL = import.meta.env.VITE_SITE_URL;
-  // const mutation = useLogin();
-  const { mutate, isLoading, isError, isSuccess, error } = useLogin();
-  console.log(isLoading, isError, isSuccess, error);
+  const { mutate, isPending, isError, isSuccess, error } = useLogin();
+
   const {
     register,
     handleSubmit,
@@ -21,17 +19,19 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const validateEmail = (value) => {
-    const trimmedValue = value.trim();
-    const emailPattern = /^[A-Za-z0-9+._]+@[A-Za-z0-9]+\.[A-Za-z]{2}/i;
-    return (
-      emailPattern.test(trimmedValue) || "Please enter a valid email address."
-    );
-  };
+  // const validateEmail = (value) => {
+  //   const trimmedValue = value.trim();
+  //   const emailPattern = /^[A-Za-z0-9+._]+@[A-Za-z0-9]+\.[A-Za-z]{2}/i;
+  //   return (
+  //     emailPattern.test(trimmedValue) || "Please enter a valid email address."
+  //   );
+  // };
 
   const onSubmit = async (data) => {
-    console.log(data);
     mutate(data);
+    if (isSuccess) {
+      reset();
+    }
   };
 
   return (
@@ -82,7 +82,7 @@ const Login = () => {
               transition={{ delay: 0.4, ease: "linear", duration: 0.5 }}
               className="text-font2 text-sm flex flex-col gap-[15px]"
             >
-              <Input
+              {/* <Input
                 className="flex flex-col"
                 label="Email"
                 errors={errors}
@@ -94,6 +94,28 @@ const Login = () => {
                   required: "This field is required.",
                   validate: validateEmail,
                   onBlur: (e) => setValue("email", e.target.value.trim()),
+                })}
+              >
+                Hello
+              </Input> */}
+
+              <Input
+                className="flex flex-col"
+                label="Username"
+                errors={errors}
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                {...register("username", {
+                  required: "This field is required.",
+                  validate: (value) =>
+                    value.trim() !== "" || "Field cannot be empty spaces.",
+                  minLength: {
+                    value: 3,
+                    message: "Please enter at least 3 characters.",
+                  },
+                  onBlur: (e) => setValue("username", e.target.value.trim()),
                 })}
               />
 
@@ -109,17 +131,17 @@ const Login = () => {
                   required: "This field is required.",
                   validate: (value) =>
                     value.trim() !== "" || "Field cannot be empty spaces.",
-                  pattern: {
-                    value:
-                      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/i,
-                    message:
-                      "Please enter at least minimum six characters, include at least one letter, one number and one special character.",
-                  },
-
-                  // minLength: {
-                  //   value: 3,
-                  //   message: "Please enter at least 3 characters.",
+                  // pattern: {
+                  //   value:
+                  //     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/i,
+                  //   message:
+                  //     "Please enter at least minimum six characters, include at least one letter, one number and one special character.",
                   // },
+
+                  minLength: {
+                    value: 3,
+                    message: "Please enter at least 3 characters.",
+                  },
                   onBlur: (e) => setValue("password", e.target.value.trim()),
                 })}
               />
@@ -127,8 +149,8 @@ const Login = () => {
                 Forgot your password?
               </p>
               <Button
-                disabled={isLoading}
-                isLoading={isLoading}
+                disabled={isPending}
+                isLoading={isPending}
                 text="Login"
                 width="w-full"
                 size="18px"

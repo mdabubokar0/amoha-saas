@@ -3,7 +3,7 @@ import React from "react";
 const Button = ({
   disabled,
   text,
-  isLoading,
+  isLoading = false,
   size = "20px",
   width,
   fontWeight,
@@ -26,7 +26,8 @@ const Button = ({
         <svg
           aria-hidden="true"
           role="status"
-          className={`inline-block mr-2 animate-spin w-[${size}] h-[${size}] text-white`}
+          className={`inline-block mr-2 animate-spin text-white`}
+          style={{ width: size, height: size }}
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

@@ -1,31 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Sidebar } from "../../Sidebar/Sidebar";
 import { SmallBar } from "../../Sidebar/SmallBar";
 import ReportCard from "./ReportCard";
 import reportInfo from "./reportInfo.json";
 import { Navbar } from "../../Navbar/Navbar";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useUserDetails } from "../../Hooks/UserHooks";
 
 export const Dashboard = () => {
-  const navigate = useNavigate();
-  const [patientList, setPatientList] = useState([]);
-  const [user, setUser] = useState("");
-
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/login");
-    } else {
-      axios
-        .get("http://18.212.83.122:8000/api/user/details", {
-          headers: {
-            Authorization: `Token ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((res) => setUser(res.data.name))
-        .catch((err) => console.log(err));
-    }
-  }, []);
+  const { data, error, isPending } = useUserDetails();
 
   return (
     <div>
@@ -41,7 +23,8 @@ export const Dashboard = () => {
                     Welcome
                   </h4>
                   <h1 className="text-[18px] md:text-[26px] font-semibold">
-                    {user}
+                    {/* {user} */}
+                    santu
                   </h1>
                   <h4 className="text-[12px] md:text-[14px] font-normal">
                     Opthalmologist, Eye Specialist
@@ -58,8 +41,8 @@ export const Dashboard = () => {
             <div className="w-full h-full md:h-[220px] bg-white rounded-[20px] border-[.5px] border-[#c4c4c4] px-5 md:px-10 py-5 flex flex-col justify-between">
               <h3 className="text-[18px] font-medium">Weekly Reports</h3>
               <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
-                {reportInfo.map((r) => (
-                  <div className="flex-1">
+                {reportInfo.map((r, i) => (
+                  <div className="flex-1" key={i}>
                     <ReportCard
                       color={r.color}
                       title={r.title}

@@ -12,6 +12,8 @@ import { Reports } from "./components/Pages/Reports/Reports";
 import { PatientProfile } from "./components/Pages/PatientRecords/PatientProfile";
 import { PatientEdit } from "./components/Pages/PatientRecords/PatientEdit";
 import { Profile } from "./components/Pages/User/Profile";
+import { ToastContainer } from "react-toastify";
+import ProtectedRoute from "./components/ProjectedRoute";
 
 function App() {
   return (
@@ -20,14 +22,19 @@ function App() {
         <title>Amoha.ai - Login</title>
         <link rel="canonical" href={`${import.meta.env.VITE_SAAS_URL}`} />
       </Helmet>
+      <ToastContainer />
       <Main>
         <Routes>
           <Route exact path="/" element={<LoginPage />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
+          <Route element={<ProtectedRoute />}>
+            <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route exact path="/visiontest" element={<VisionTest />} />
+          </Route>
+
           <Route exact path="/profile" element={<Profile />} />
-          <Route exact path="/dashboard" element={<Dashboard />} />
-          <Route exact path="/visiontest" element={<VisionTest />} />
+
           <Route exact path="/patientrecords" element={<PatientRecords />} />
           <Route
             exact

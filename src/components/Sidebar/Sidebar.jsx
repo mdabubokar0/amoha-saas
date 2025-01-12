@@ -12,8 +12,9 @@ export const Sidebar = () => {
 
   return (
     <div className="hidden lg:flex flex-col gap-7 pt-[36px] w-[70px] lg:w-[300px] h border-r-[1px] border-r-[#D9D9D9] sticky top-[70px] bg-white">
-      {sidebar.map((s) => (
+      {sidebar.map((s, i) => (
         <Link
+          key={i}
           to={s.link}
           onClick={() => handleLocation(s.link)}
           className={`flex items-center gap-3 cursor-pointer ${
